@@ -28,7 +28,7 @@ app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uplo
 
 //utvonalak hasznalata
 app.use('/api/auth', authRoutes)
-app.use('/api/topics', topicRoutes);
+app.use('/api/topics', topicRoutes)
 app.use('/api/profile', profileRoutes);
 
 module.exports = app
