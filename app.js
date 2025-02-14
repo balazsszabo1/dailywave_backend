@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
-app.use(cookieParser());
+app.use(cookieParser())
 app.use(cors({
     origin: 'https://deft-moonbeam-90e218.netlify.app',
     credentials: true
