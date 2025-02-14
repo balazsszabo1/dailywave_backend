@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://127.0.0.1:5500',
+    origin: 'https://deft-moonbeam-90e218.netlify.app',
     credentials: true
 }));
 
