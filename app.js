@@ -1,5 +1,5 @@
 //telepitett csomag imp
-const path = require('path')
+const path = require('path');
 const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
