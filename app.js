@@ -27,7 +27,7 @@ app.use(cors({
 app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uploads')));
 
 //utvonalak hasznalata
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes)
 app.use('/api/topics', topicRoutes);
 app.use('/api/profile', profileRoutes);
 
