@@ -1,22 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs')
 const validator = require('validator');
 const db = require('../models/db');
-const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
-
-const app = express();
-
-// 🟢 CORS beállítások
-app.use(cors({
-    origin: 'https://deft-moonbeam-90e218.netlify.app', // Frontend URL
-    credentials: true // Engedélyezi a sütik küldését
-}));
-
-app.use(express.json());
-app.use(cookieParser()); // 🟢 Engedélyezi a sütik kezelését
 
 const login = (req, res) => {
     const { email, password } = req.body;
@@ -25,9 +11,11 @@ const login = (req, res) => {
     if (!validator.isEmail(email)) {
         errors.push({ error: 'Add meg az email címet' });
     }
+
     if (validator.isEmpty(password)) {
         errors.push({ error: 'Add meg a jelszót' });
     }
+
     if (errors.length > 0) {
         return res.status(400).json({ errors });
     }
@@ -38,6 +26,7 @@ const login = (req, res) => {
             console.error('SQL Hiba:', err);
             return res.status(500).json({ error: 'Belső hiba történt a szerveren' });
         }
+
         if (result.length === 0) {
             return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
         }
@@ -45,8 +34,8 @@ const login = (req, res) => {
         const user = result[0];
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) {
-                console.error('Jelszó ellenőrzési hiba:', err);
-                return res.status(500).json({ error: 'Hiba történt a jelszó ellenőrzésekor' });
+                console.error('Jelszó összehasonlítási hiba:', err);
+                return res.status(500).json({ error: 'Hiba történt a jelszó ellenőrzésében' });
             }
             if (isMatch) {
                 const token = jwt.sign(
@@ -55,12 +44,11 @@ const login = (req, res) => {
                     { expiresIn: '1y' }
                 );
 
-                // 🟢 SÜTI BEÁLLÍTÁS: Secure mód Netlify frontendhez
                 res.cookie('auth_token', token, {
                     httpOnly: true,
-                    secure: true, // HTTPS miatt kell
-                    sameSite: 'none', // Más domain miatt kell
-                    maxAge: 3600000 * 24 * 31 * 12, // 1 év
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    maxAge: 3600000 * 24 * 31 * 12,
                 });
 
                 return res.status(200).json({ message: 'Sikeres bejelentkezés' });
@@ -78,12 +66,15 @@ const register = async (req, res) => {
     if (!email || !validator.isEmail(email)) {
         errors.push({ error: 'Nem valós email' });
     }
+
     if (!password || !validator.isLength(password, { min: 6 })) {
         errors.push({ error: 'A jelszónak minimum 6 karakterből kell állnia' });
     }
+
     if (!name || validator.isEmpty(name)) {
         errors.push({ error: 'Töltsd ki a nevet' });
     }
+
     if (errors.length > 0) {
         return res.status(400).json({ errors });
     }
@@ -127,4 +118,5 @@ const logout = (req, res) => {
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
 
-module.exports = { register, login, logout };
+
+module.exports = { register, login, logout }
