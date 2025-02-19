@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs');
-const validator = require('validator');
-const db = require('../models/db');
+const bcrypt = require('bcryptjs')
+const validator = require('validator')
+const db = require('../models/db')
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
