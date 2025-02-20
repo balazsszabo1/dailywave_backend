@@ -2,11 +2,18 @@ const db = require('../models/db');
 const bcrypt = require('bcryptjs');
 const sharp = require('sharp');
 const validator = require('validator');
-const path = require('path')
+const path = require('path');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config/dotenvConfig').config;
+const checkAuth = require('../middleware/checkAuth');
 
 const editProfileName = (req, res) => {
     const name = req.body.name;
     const user_id = req.user.id;
+
+    if (!user_id) {
+        return res.status(401).json({ error: 'Nincs érvényes token, kérlek jelentkezz be' });
+    }
 
     const sql = 'UPDATE users SET username = COALESCE(NULLIF(?, ""), username) WHERE user_id = ?';
 
@@ -21,7 +28,11 @@ const editProfileName = (req, res) => {
 
 const getProfileName = (req, res) => {
     const user_id = req.user.id;
-    console.log('User ID:', user_id);  // Logolj a konzolra, hogy tényleg van-e user_id
+    console.log('User ID:', user_id);
+
+    if (!user_id) {
+        return res.status(401).json({ error: 'Nincs érvényes token, kérlek jelentkezz be' });
+    }
 
     const sql = 'SELECT username FROM users WHERE user_id = ?';
     db.query(sql, [user_id], (err, result) => {
@@ -30,19 +41,24 @@ const getProfileName = (req, res) => {
             return res.status(500).json({ error: 'Hiba a név lekérésekor' });
         }
 
-        console.log('Query result:', result);  // Logolj, hogy mit ad vissza a lekérdezés
+        console.log('Query result:', result);
 
         if (result.length > 0) {
-            return res.json({ name: result[0].username });  // Visszaadjuk a 'name' kulcsot
+            return res.json({ name: result[0].username });
         } else {
             console.log('No user found with ID:', user_id);
             return res.status(404).json({ error: 'Név nem található' });
         }
     });
 };
+
 const editProfilePsw = (req, res) => {
     const psw = req.body.psw;
     const user_id = req.user.id;
+
+    if (!user_id) {
+        return res.status(401).json({ error: 'Nincs érvényes token, kérlek jelentkezz be' });
+    }
 
     const salt = 10;
 
@@ -71,14 +87,14 @@ const editProfilePic = (req, res) => {
     const profile_picture = req.file ? req.file.filename : null;
 
     if (!user_id) {
-        return res.status(400).json({ error: 'User ID is required' });
+        return res.status(401).json({ error: 'Nincs érvényes token, kérlek jelentkezz be' });
     }
 
     const sql = 'UPDATE users SET profile_picture = COALESCE(NULLIF(?, ""), profile_picture) WHERE user_id = ?';
 
     db.query(sql, [profile_picture, user_id], (err, result) => {
         if (err) {
-            console.error('SQL Error: ', err);  // Log the error for debugging
+            console.error('SQL Error: ', err);
             return res.status(500).json({ error: 'Database error, please try again later.' });
         }
 
@@ -90,9 +106,13 @@ const editProfilePic = (req, res) => {
     });
 };
 
-
 const getProfilePic = (req, res) => {
     const user_id = req.user.id;
+
+    if (!user_id) {
+        return res.status(401).json({ error: 'Nincs érvényes token, kérlek jelentkezz be' });
+    }
+
     const sql = 'SELECT profile_picture FROM users WHERE user_id = ?';
     db.query(sql, [user_id], (err, result) => {
         if (err) {
