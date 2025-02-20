@@ -1,9 +1,8 @@
-const bcrypt = require('bcryptjs')
-const validator = require('validator')
-const db = require('../models/db')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const validator = require('validator');
+const db = require('../models/db');
+const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
-
 
 const login = (req, res) => {
     const { email, password } = req.body;
@@ -51,8 +50,8 @@ const login = (req, res) => {
                     sameSite: 'strict',
                     maxAge: 3600000 * 24 * 31 * 12,
                 });
-
-                return res.status(200).json({ message: 'Sikeres bejelentkezés' });
+                
+                return res.status(200).json({ message: 'Sikeres bejelentkezés', token });
             } else {
                 return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
             }
@@ -119,5 +118,19 @@ const logout = (req, res) => {
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
 
+const checkAuth = (req, res) => {
+    const token = req.cookies.auth_token;
 
-module.exports = { register, login, logout }
+    if (!token) {
+        return res.status(401).json({ error: 'Nincs érvényes token, kérlek jelentkezz be' });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Érvénytelen vagy lejárt token' });
+        }
+        res.status(200).json({ message: 'Token érvényes', userId: decoded.id });
+    });
+};
+
+module.exports = { register, login, logout, checkAuth };
