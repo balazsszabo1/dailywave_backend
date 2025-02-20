@@ -2,10 +2,11 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
 const checkAuth = (req, res, next) => {
-    let token = req.cookies?.auth_token || req.headers.authorization?.split(' ')[1];
+    // Extract token from cookies or Authorization header
+    let token = req.cookies?.auth_token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
 
     if (!token) {
-        return res.status(401).json({ error: 'Nincs érvényes token, kérlek jelentkezz be' });
+        return res.status(401).json({ error: 'Token nem található, kérlek jelentkezz be' });
     }
 
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
@@ -18,3 +19,4 @@ const checkAuth = (req, res, next) => {
 };
 
 module.exports = checkAuth;
+
