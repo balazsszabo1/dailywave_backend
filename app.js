@@ -23,6 +23,7 @@ app.use(cors({
     credentials: true
 }));
 
+
 //statikus fajlok elerese
 app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uploads')));
 
