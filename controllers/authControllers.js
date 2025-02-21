@@ -77,7 +77,7 @@ const register = async (req, res) => {
         const hash = await bcrypt.hash(password, 10);
         await db.promise().query(
             'INSERT INTO users (email, password, role, profile_picture, username) VALUES (?, ?, ?, ?, ?)',
-            [email, hash, 'user', 'default.png', name]
+            [email, hash, '0', 'default.png', name]
         );
 
         return res.status(201).json({ message: 'Sikeres regisztráció' });

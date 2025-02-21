@@ -1,5 +1,5 @@
 //telepitett csomag imp
-const path = require('path');
+const path = require('path')
 const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -19,8 +19,8 @@ app.set('trust proxy', false);
 //middleware config
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(limiter); // Ha van rate limit middleware, győződj meg, hogy az a helyén van
-app.use(cookieParser());
+app.use(limiter);
+app.use(cookieParser())
 app.use(cors({
     origin: 'https://deft-moonbeam-90e218.netlify.app',
     credentials: true
