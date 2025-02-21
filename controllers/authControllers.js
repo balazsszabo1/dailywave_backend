@@ -4,98 +4,74 @@ const db = require('../models/db');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-const login = (req, res) => {
-    const { email, password } = req.body;
-
-    const errors = [];
-    if (!validator.isEmail(email)) {
-        errors.push({ error: 'Add meg az email címet' });
-    }
-
-    if (validator.isEmpty(password)) {
-        errors.push({ error: 'Add meg a jelszót' });
-    }
-
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
-    }
-
-    const sql = 'SELECT * FROM users WHERE email LIKE ?';
-    db.query(sql, [email], (err, result) => {
-        if (err) {
-            console.error('SQL Hiba:', err);
-            return res.status(500).json({ error: 'Belső hiba történt a szerveren' });
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ error: 'Érvénytelen email cím' });
         }
 
-        if (result.length === 0) {
+        if (validator.isEmpty(password)) {
+            return res.status(400).json({ error: 'A jelszó megadása kötelező' });
+        }
+
+        const [users] = await db.promise().query('SELECT * FROM users WHERE email = ?', [email]);
+
+        if (users.length === 0) {
             return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
         }
 
-        const user = result[0];
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) {
-                console.error('Jelszó összehasonlítási hiba:', err);
-                return res.status(500).json({ error: 'Hiba történt a jelszó ellenőrzésében' });
-            }
-            if (isMatch) {
-                const token = jwt.sign(
-                    { id: user.user_id },
-                    JWT_SECRET,
-                    { expiresIn: '1y' }
-                );
+        const user = users[0];
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
+        }
 
-                res.cookie('auth_token', token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production', // ha nem működik, próbáld meg false-ra állítani
-                    sameSite: 'strict', // ha frontend és backend különböző domain, akkor próbáld meg 'none'
-                    maxAge: 3600000 * 24 * 31 * 12,
-                });
+        const token = jwt.sign({ id: user.user_id }, JWT_SECRET, { expiresIn: '1y' });
 
-                return res.status(200).json({ message: 'Sikeres bejelentkezés', token });
-            } else {
-                return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
-            }
+        res.cookie('auth_token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            maxAge: 3600000 * 24 * 31 * 12, // 1 év
         });
-    });
+
+        return res.status(200).json({ message: 'Sikeres bejelentkezés', token });
+
+    } catch (err) {
+        console.error('Bejelentkezési hiba:', err);
+        return res.status(500).json({ error: 'Belső szerverhiba' });
+    }
 };
 
-
 const register = async (req, res) => {
-    const { email, password, name } = req.body;
-    const errors = [];
-
-    if (!email || !validator.isEmail(email)) {
-        errors.push({ error: 'Nem valós email' });
-    }
-
-    if (!password || !validator.isLength(password, { min: 6 })) {
-        errors.push({ error: 'A jelszónak minimum 6 karakterből kell állnia' });
-    }
-
-    if (!name || validator.isEmpty(name)) {
-        errors.push({ error: 'Töltsd ki a nevet' });
-    }
-
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
-    }
-
     try {
+        const { email, password, name } = req.body;
+
+        if (!email || !validator.isEmail(email)) {
+            return res.status(400).json({ error: 'Nem valós email' });
+        }
+
+        if (!password || !validator.isLength(password, { min: 6 })) {
+            return res.status(400).json({ error: 'A jelszónak minimum 6 karakterből kell állnia' });
+        }
+
+        if (!name || validator.isEmpty(name)) {
+            return res.status(400).json({ error: 'Töltsd ki a nevet' });
+        }
+
         const [existingUsers] = await db.promise().query(
             'SELECT * FROM users WHERE email = ? OR username = ?',
             [email, name]
         );
 
         if (existingUsers.length > 0) {
-            const conflicts = [];
-            if (existingUsers.some(user => user.email === email)) {
-                conflicts.push('Az email már foglalt');
-            }
-            if (existingUsers.some(user => user.username === name)) {
-                conflicts.push('A felhasználónév már foglalt');
-            }
-            return res.status(400).json({ errors: conflicts.map(error => ({ error })) });
+            return res.status(400).json({
+                error: existingUsers.some(user => user.email === email)
+                    ? 'Az email már foglalt'
+                    : 'A felhasználónév már foglalt'
+            });
         }
 
         const hash = await bcrypt.hash(password, 10);
@@ -105,6 +81,7 @@ const register = async (req, res) => {
         );
 
         return res.status(201).json({ message: 'Sikeres regisztráció' });
+
     } catch (err) {
         console.error('Hiba történt a regisztráció során:', err);
         return res.status(500).json({ error: 'Hiba történt a szerveren' });
@@ -114,11 +91,11 @@ const register = async (req, res) => {
 const logout = (req, res) => {
     res.clearCookie('auth_token', {
         httpOnly: true,
-        secure: true,
-        sameSite: 'none',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
     });
+
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
 
-
-module.exports = { register, login, logout }
+module.exports = { register, login, logout };
