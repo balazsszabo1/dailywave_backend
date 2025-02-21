@@ -46,8 +46,8 @@ const login = (req, res) => {
 
                 res.cookie('auth_token', token, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'strict',
+                    secure: true,
+                    sameSite: 'none',
                     maxAge: 3600000 * 24 * 31 * 12,
                 });
 
