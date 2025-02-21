@@ -115,6 +115,8 @@ const logout = (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
+        domain: '.dszcbaross.edu.hu',
+        path: '/'
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
