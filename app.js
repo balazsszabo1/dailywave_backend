@@ -13,6 +13,9 @@ const profileRoutes = require('./routes/profileRoutes');
 
 const app = express();
 
+// Engedélyezzük a trust proxy-t (proxy mögött futó alkalmazásokhoz szükséges)
+app.set('trust proxy', false); 
+
 //middleware config
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -23,7 +26,6 @@ app.use(cors({
     credentials: true
 }));
 
-
 //statikus fajlok elerese
 app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uploads')));
 
@@ -32,4 +34,4 @@ app.use('/api/auth', authRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/profile', profileRoutes);
 
-module.exports = app
+module.exports = app;
