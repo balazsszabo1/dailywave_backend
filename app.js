@@ -20,7 +20,9 @@ app.use(limiter);
 app.use(cookieParser())
 app.use(cors({
     origin: 'https://deft-moonbeam-90e218.netlify.app',
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 //statikus fajlok elerese

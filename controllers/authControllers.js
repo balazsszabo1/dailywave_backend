@@ -113,8 +113,10 @@ const register = async (req, res) => {
 const logout = (req, res) => {
     res.clearCookie('auth_token', {
         httpOnly: true,
-        secure: true, // Csak akkor használd, ha HTTPS alatt fut minden
-        sameSite: 'none', // Cross-origin sütikhez szükséges
+        secure: true,
+        sameSite: 'none',
+        domain: '.dszcbaross.edu.hu',
+        path: '/'
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
