@@ -113,8 +113,8 @@ const register = async (req, res) => {
 const logout = (req, res) => {
     res.clearCookie('auth_token', {
         httpOnly: true,
-        secure: true,
-        sameSite: 'none',
+        secure: true, // Csak akkor használd, ha HTTPS alatt fut minden
+        sameSite: 'none', // Cross-origin sütikhez szükséges
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
