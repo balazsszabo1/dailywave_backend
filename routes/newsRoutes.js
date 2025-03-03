@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const db = require('../db');  // A DB kapcsolatot itt importálhatjuk, hogy használhassuk
+const db = require('../models/db');
 const router = express.Router();
 
 // Kép feltöltés beállítása
