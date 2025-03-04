@@ -21,7 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://deft-moonbeam-90e218.netlify.app',
+    //origin: 'https://deft-moonbeam-90e218.netlify.app',
+    origin: 'https://dailywave.netlify.app',
     credentials: true
 }));
 
