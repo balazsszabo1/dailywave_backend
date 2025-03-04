@@ -112,7 +112,7 @@ const register = async (req, res) => {
 };
 
 const logout = (req, res) => {
-    res.clearCookie('auth_token', {
+    res.cookie('auth_token', {
         httpOnly: true,
         secure: true,
         sameSite: 'lax',
