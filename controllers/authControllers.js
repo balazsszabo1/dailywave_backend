@@ -112,13 +112,12 @@ const register = async (req, res) => {
 };
 
 const logout = (req, res) => {
-    res.cookie('auth_token', {
+    res.clearCookie('auth_token', {
         httpOnly: true,
         secure: true,
         sameSite: 'lax',
         domain: 'deft-moonbeam-90e218.netlify.app',
         path: '/',
-        maxAge: 1
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
