@@ -118,6 +118,7 @@ const logout = (req, res) => {
         sameSite: 'lax',
         domain: 'deft-moonbeam-90e218.netlify.app',
         path: '/',
+        maxAge: 1
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
