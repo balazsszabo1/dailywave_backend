@@ -115,8 +115,9 @@ const logout = (req, res) => {
     res.clearCookie('auth_token', {
         httpOnly: true,
         secure: true,
-        sameSite: 'none',
-        path: '/'
+        sameSite: 'lax',
+        domain: 'deft-moonbeam-90e218.netlify.app',
+        path: '/',
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
