@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
 const authenticateToken = (req, res, next) => {
+    console.log(req.headers);
     const token = req.cookies.auth_token;  // A token a cookie-ban van
 
     if (!token) {
