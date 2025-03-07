@@ -116,7 +116,7 @@ const logout = (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'lax',
-        domain: 'deft-moonbeam-90e218.netlify.app',
+        domain: 'dailywave.netlify.app',
         path: '/',
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
