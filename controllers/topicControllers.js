@@ -7,27 +7,34 @@ const getAlltopics = (req, res) => {
         FROM topic t;
     `, (err, results) => {
         if (err) {
-            console.error(err);
+            console.error(`adatbázis hiba a topicok lekérésekor: ${err}`);
             return res.status(500).send("Database error");
         }
+        console.log(results);
+        
         res.json(results);
     });
 };
 
 const uploadTopic = (req, res) => {
+    console.log(req.user, req.user_id);
+    
     if (!req.user || !req.user.id) {
         return res.status(401).json({ error: 'Nem vagy bejelentkezve' });
     }
 
     const { topic_title } = req.body;
     const user_id = req.user.id;  // Most már biztos, hogy nem undefined
+    console.log(`topic title: ${topic_title}, user_id: ${user_id}`);
+    
 
     if (!topic_title) {
         return res.status(400).send("A cím megadása kötelező.");
     }
 
     const currentDate = new Date().toISOString();
-
+    console.log(currentDate);
+    
     db.query(`
         INSERT INTO topics (topic_title, user_id, date) 
         VALUES (?, ?, ?);
@@ -43,7 +50,8 @@ const uploadTopic = (req, res) => {
             user_id: user_id,
             date: currentDate,
         };
-
+        console.log(newTopic);
+        
         res.status(201).json(newTopic);
     });
 };
@@ -51,7 +59,8 @@ const uploadTopic = (req, res) => {
 
 const getComments = (req, res) => {
     const topicId = parseInt(req.params.topicId, 10);
-
+    console.log(topicId);
+    
     if (isNaN(topicId)) {
         return res.status(400).json({ error: 'Invalid topic ID' });
     }
@@ -71,7 +80,8 @@ const getComments = (req, res) => {
 
 const addComment = async (req, res) => {
     const { topic_id, comment, user_id } = req.body;
-
+    console.log(topic_id, comment, user_id);
+    
     if (!topic_id || !comment || !user_id) {
         return res.status(400).json({ message: "Missing required fields" });
     }
