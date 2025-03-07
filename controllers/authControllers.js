@@ -48,7 +48,7 @@ const login = (req, res) => {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'lax',
-                    domain: 'deft-moonbeam-90e218.netlify.app',
+                    domain: 'dailywave.netlify.app',
                     path: '/',
                     maxAge: 3600000 * 24 * 31 * 11
                 });
