@@ -2,9 +2,7 @@ const db = require('../models/db');
 
 const getAlltopics = (req, res) => {
     db.query(`
-        SELECT t.*, 
-            (SELECT date FROM comments WHERE topic_id = t.topic_id ORDER BY date DESC LIMIT 1) AS last_comment
-        FROM topic t;
+        SELECT * FROM topic JOIN users USING(user_id) ORDER BY topic.date DESC;
     `, (err, results) => {
         if (err) {
             console.error(`adatbázis hiba a topicok lekérésekor: ${err}`);
