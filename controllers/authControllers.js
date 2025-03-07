@@ -48,8 +48,6 @@ const login = (req, res) => {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'lax',
-                    domain: 'dailywave.netlify.app',
-                    path: '/',
                     maxAge: 3600000 * 24 * 31 * 11
                 });
 
@@ -116,8 +114,6 @@ const logout = (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'lax',
-        domain: 'dailywave.netlify.app',
-        path: '/',
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
