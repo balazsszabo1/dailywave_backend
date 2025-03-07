@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs')
-const validator = require('validator')
+const bcrypt = require('bcryptjs');
+const validator = require('validator');
 const db = require('../models/db');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
 const login = (req, res) => {
@@ -47,11 +47,13 @@ const login = (req, res) => {
                 res.cookie('auth_token', token, {
                     httpOnly: true,
                     secure: true,
-                    sameSite: 'lax',
-                    domain: 'deft-moonbeam-90e218.netlify.app',
+                    sameSite: 'None',  // FONTOS, ha külön domainen van a frontend!
+                    domain: '.netlify.app',  // Ez engedi az összes Netlify subdomain-t
                     path: '/',
                     maxAge: 3600000 * 24 * 31 * 11
                 });
+
+                console.log("Cookie beállítva:", token);  // Ellenőrzésre
 
                 return res.status(200).json({ message: 'Sikeres bejelentkezés' });
             } else {
@@ -112,15 +114,17 @@ const register = async (req, res) => {
 };
 
 const logout = (req, res) => {
-    res.clearCookie('auth_token', token, {
+    res.clearCookie('auth_token', {
         httpOnly: true,
         secure: true,
-        sameSite: 'lax',
-        domain: 'dailywave.netlify.app',
+        sameSite: 'None',
+        domain: '.netlify.app',  // Az összes Netlify subdomainre érvényes
         path: '/',
     });
+
+    console.log("Cookie törölve");  // Ellenőrzésre
+
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
 
-
-module.exports = { register, login, logout }
+module.exports = { register, login, logout };
