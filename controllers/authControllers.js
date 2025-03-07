@@ -38,8 +38,13 @@ const login = (req, res) => {
                 return res.status(500).json({ error: 'Hiba történt a jelszó ellenőrzésében' });
             }
             if (isMatch) {
+                // Admin jogosultság ellenőrzés: Ha az email és a jelszó is 'admin', akkor admin felhasználó
+                if (email === 'admin' && password === 'admin') {
+                    user.role = 'admin';  // Kézzel beállítjuk az admin jogosultságot
+                }
+
                 const token = jwt.sign(
-                    { id: user.user_id },
+                    { id: user.user_id, role: user.role },  // Role-t is belefoglaljuk a tokenbe
                     JWT_SECRET,
                     { expiresIn: '1y' }
                 );
@@ -51,13 +56,15 @@ const login = (req, res) => {
                     maxAge: 3600000 * 24 * 31 * 11
                 });
 
-                return res.status(200).json({ message: 'Sikeres bejelentkezés' });
+                return res.status(200).json({ message: 'Sikeres bejelentkezés', role: user.role });
             } else {
                 return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
             }
         });
     });
 };
+
+
 
 const register = async (req, res) => {
     const { email, password, name } = req.body;
@@ -99,7 +106,7 @@ const register = async (req, res) => {
         const hash = await bcrypt.hash(password, 10);
         await db.promise().query(
             'INSERT INTO users (email, password, role, profile_picture, username) VALUES (?, ?, ?, ?, ?)',
-            [email, hash, '0', 'default.png', name]
+            [email, hash, '0', 'default.png', name] // Az alapértelmezett role most is '0'
         );
 
         return res.status(201).json({ message: 'Sikeres regisztráció' });
@@ -108,6 +115,8 @@ const register = async (req, res) => {
         return res.status(500).json({ error: 'Hiba történt a szerveren' });
     }
 };
+
+
 
 const logout = (req, res) => {
     res.clearCookie('auth_token', {
