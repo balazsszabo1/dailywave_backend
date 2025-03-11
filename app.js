@@ -11,7 +11,8 @@ const authenticateToken = require('./middleware/jwtAuth');
 const authRoutes = require('./routes/authRoutes');
 const topicRoutes = require('./routes/topicRoutes');
 const profileRoutes = require('./routes/profileRoutes');
-const newsRoutes = require('./routes/newsRoutes'); // importálás
+const newsRoutes = require('./routes/newsRoutes');
+
 
 const app = express();
 
@@ -29,10 +30,9 @@ app.use(cors({
 // Statikus fájlok elérhetősége
 app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uploads')));
 
-// Útvonalak használata
-app.use('/api/auth', authRoutes);
-app.use('/api/topics', topicRoutes);
+app.use('/api/auth', authRoutes)
+app.use('/api/topics', topicRoutes)
 app.use('/api/profile', profileRoutes);
-app.use('/api/news', newsRoutes); // Az új newsRoutes hozzáadása
+app.use('/api/news', newsRoutes);
 
 module.exports = app;
