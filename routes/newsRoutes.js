@@ -5,3 +5,5 @@ const { uploadNews } = require('../controllers/newsControllers')
 const router = express.Router();
 
 router.post('/uploadnews', authenticateToken, uploadNews);
+
+module.exports = router;
