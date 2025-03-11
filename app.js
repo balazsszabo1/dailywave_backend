@@ -10,6 +10,7 @@ const authenticateToken = require('./middleware/jwtAuth');
 const authRoutes = require('./routes/authRoutes');
 const topicRoutes = require('./routes/topicRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const newsRoutes = require('./routes/newsRoutes');
 
 const app = express();
 
@@ -30,5 +31,6 @@ app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uplo
 app.use('/api/auth', authRoutes)
 app.use('/api/topics', topicRoutes)
 app.use('/api/profile', profileRoutes);
+app.use('/api/news', newsRoutes);
 
 module.exports = app
