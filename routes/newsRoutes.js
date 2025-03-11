@@ -1,9 +1,11 @@
 const express = require('express');
 const authenticateToken = require('../middleware/jwtAuth');
-const { uploadNews } = require('../controllers/newsControllers')
+const upload = require('../middlewares/upload'); // Multer middleware
+const { uploadNews } = require('../controllers/newsControllers');
 
 const router = express.Router();
 
-router.post('/uploadnews', authenticateToken, uploadNews);
+// Az upload middleware hozzáadása, hogy a fájl is átmenjen a kérésben
+router.post('/uploadnews', authenticateToken, upload.single('index_pic'), uploadNews);
 
 module.exports = router;
