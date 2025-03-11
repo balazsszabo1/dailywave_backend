@@ -1,13 +1,13 @@
-const bcrypt = require('bcryptjs');
-const validator = require('validator');
+const bcrypt = require('bcryptjs')
+const validator = require('validator')
 const db = require('../models/db');
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
-
 const login = (req, res) => {
     const { email, password } = req.body;
-
+    console.log(email, password);
+    
     const errors = [];
     if (!validator.isEmail(email)) {
         errors.push({ error: 'Add meg az email címet' });
@@ -20,7 +20,8 @@ const login = (req, res) => {
     if (errors.length > 0) {
         return res.status(400).json({ errors });
     }
-
+    console.log(errors);
+    
     const sql = 'SELECT * FROM users WHERE email LIKE ?';
     db.query(sql, [email], (err, result) => {
         if (err) {
@@ -31,8 +32,11 @@ const login = (req, res) => {
         if (result.length === 0) {
             return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
         }
-
+        console.log(result);
+        
         const user = result[0];
+        console.log(user);
+        
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) {
                 console.error('Jelszó összehasonlítási hiba:', err);
@@ -47,9 +51,9 @@ const login = (req, res) => {
 
                 res.cookie('auth_token', token, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'strict',
-                    maxAge: 3600000 * 24 * 31 * 12,
+                    secure: true,
+                    sameSite: 'lax',
+                    maxAge: 3600000 * 24 * 31 * 11
                 });
 
                 return res.status(200).json({ message: 'Sikeres bejelentkezés' });
@@ -63,7 +67,8 @@ const login = (req, res) => {
 const register = async (req, res) => {
     const { email, password, name } = req.body;
     const errors = [];
-
+    console.log(email, password, name);
+    
     if (!email || !validator.isEmail(email)) {
         errors.push({ error: 'Nem valós email' });
     }
@@ -80,6 +85,8 @@ const register = async (req, res) => {
         return res.status(400).json({ errors });
     }
 
+    console.log(errors);
+    
     try {
         const [existingUsers] = await db.promise().query(
             'SELECT * FROM users WHERE email = ? OR username = ?',
@@ -113,8 +120,8 @@ const register = async (req, res) => {
 const logout = (req, res) => {
     res.clearCookie('auth_token', {
         httpOnly: true,
-        secure: true, // Csak akkor használd, ha HTTPS alatt fut minden
-        sameSite: 'none', // Cross-origin sütikhez szükséges
+        secure: true,
+        sameSite: 'lax',
     });
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
