@@ -13,6 +13,7 @@ const topicRoutes = require('./routes/topicRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const newsRoutes = require('./routes/newsRoutes');
 
+
 const app = express();
 
 // Middleware beállítások
@@ -26,12 +27,11 @@ app.use(cors({
     credentials: true
 }));
 
-// Statikus fájlok elérhetősége (authenticateToken használatával)
+// Statikus fájlok elérhetősége
 app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uploads')));
 
-// Útvonalak hozzáadása
-app.use('/api/auth', authRoutes);
-app.use('/api/topics', topicRoutes);
+app.use('/api/auth', authRoutes)
+app.use('/api/topics', topicRoutes)
 app.use('/api/profile', profileRoutes);
 app.use('/api/news', newsRoutes);
 
