@@ -1,6 +1,6 @@
 const express = require('express');
 const authenticateToken = require('../middleware/jwtAuth');
-const upload = require('../middleware/upload'); // Multer middleware
+const upload = require('../middleware/multer'); // Multer middleware
 const { uploadNews } = require('../controllers/newsControllers');
 
 const router = express.Router();
