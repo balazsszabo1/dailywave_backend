@@ -2,8 +2,7 @@
 const db = require('../models/db');
 
 const uploadNews = (req, res) => {
-    const { cat_id, news_title, news } = req.body;
-    const index_pic = req.file ? req.file.filename : null; // Feltöltött fájl neve
+    const { cat_id, news_title, news, index_pic } = req.body;
 
     if (!cat_id || !news_title || !news || !index_pic) {
         return res.status(400).json({ error: 'Minden mező kitöltése kötelező' });
