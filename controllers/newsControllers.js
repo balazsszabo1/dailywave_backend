@@ -18,4 +18,18 @@ const uploadNews = (req, res) => {
     });
 };
 
-module.exports = {uploadNews}
+const getAllNews = async (req, res) => {
+    try {
+        const query = `
+            SELECT cat_id, news_title, news, index_pic 
+            FROM news
+        `;
+        const [rows] = await db.query(query);
+        res.json(rows);
+    } catch (error) {
+        console.error("Hiba a hírek lekérése során:", error);
+        res.status(500).json({ error: "Hiba történt a hírek lekérése közben" });
+    }
+};
+
+module.exports = {uploadNews, getAllNews }
