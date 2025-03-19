@@ -16,8 +16,6 @@ const newsRoutes = require('./routes/newsRoutes');
 
 const app = express();
 
-app.set('trust proxy', true);  // Proxy beállítás
-
 // Middleware beállítások
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
