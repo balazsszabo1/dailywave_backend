@@ -6,14 +6,21 @@ const uploadNews = (req, res) => {
     // A Multer middleware használata a fájl feltöltésére
     upload(req, res, (err) => {
         if (err) {
-            return res.status(400).json({ error: err.message });
+            return res.status(400).json({ error: 'Hiba történt a fájl feltöltésekor: ' + err.message });
         }
 
         const { cat_id, news_title, news } = req.body;
         const index_pic = req.file ? req.file.filename : null;
 
+        // Minden mező validálása
         if (!cat_id || !news_title || !news || !index_pic) {
-            return res.status(400).json({ error: 'Minden mező kitöltése kötelező' });
+            return res.status(400).json({ error: 'Minden mező kitöltése kötelező.' });
+        }
+
+        // Kategória validálás (pl. legyen egy lista, amit a backend biztosít)
+        const validCategories = ['magyarorszag', 'hirek', 'sport', 'politika'];  // példa
+        if (!validCategories.includes(cat_id)) {
+            return res.status(400).json({ error: 'Érvénytelen kategória.' });
         }
 
         // A hír és a kép mentése az adatbázisba
@@ -21,9 +28,9 @@ const uploadNews = (req, res) => {
         db.query(query, [cat_id, news_title, news, index_pic], (err, result) => {
             if (err) {
                 console.error('Database insert error:', err);
-                return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során' });
+                return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
             }
-            res.status(201).json({ message: 'Hír sikeresen feltöltve', news_id: result.insertId });
+            res.status(201).json({ message: 'Hír sikeresen feltöltve.', news_id: result.insertId });
         });
     });
 };
@@ -35,7 +42,7 @@ const getAllNews = (req, res) => {
     db.query(sql, (error, results) => {
         if (error) {
             console.error("Hiba a hírek lekérése során:", error);
-            return res.status(500).json({ error: "Hiba történt a hírek lekérése közben" });
+            return res.status(500).json({ error: "Hiba történt a hírek lekérése közben." });
         }
         res.json(results);
     });

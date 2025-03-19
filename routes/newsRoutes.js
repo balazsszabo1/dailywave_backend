@@ -1,10 +1,13 @@
 const express = require('express');
 const authenticateToken = require('../middleware/jwtAuth');
-const { uploadNews, getAllNews } = require('../controllers/newsControllers')
+const { uploadNews, getAllNews } = require('../controllers/newsControllers');
 
 const router = express.Router();
 
+// Hír feltöltése (csak hitelesített felhasználóknak)
 router.post('/uploadNews', authenticateToken, uploadNews);
-router.get('/getAllNews', authenticateToken, getAllNews);
+
+// Hírek lekérése (nyilvános vagy hitelesítéssel)
+router.get('/getAllNews', getAllNews);  // Ha nem kell hitelesítés a lekéréshez
 
 module.exports = router;
