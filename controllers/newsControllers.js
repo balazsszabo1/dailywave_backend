@@ -17,9 +17,9 @@ const uploadNews = (req, res) => {
             return res.status(400).json({ error: 'Minden mező kitöltése kötelező.' });
         }
 
-        // Kategória validálás (pl. legyen egy lista, amit a backend biztosít)
-        const validCategories = ['magyarorszag', 'hirek', 'sport', 'politika'];  // példa
-        if (!validCategories.includes(cat_id)) {
+        // Kategória validálás (csak a számokat engedélyezzük, 1, 2, 3, 4)
+        const validCategories = [1, 2, 3, 4];  // Az érvényes kategória ID-k
+        if (!validCategories.includes(Number(cat_id))) {
             return res.status(400).json({ error: 'Érvénytelen kategória.' });
         }
 
