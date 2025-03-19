@@ -3,8 +3,6 @@ const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
-app.set('trust proxy', true);  // Proxy beállítás
-
 // Sajat csomagok importálása
 const limiter = require('./middleware/limiter');
 const authenticateToken = require('./middleware/jwtAuth');
@@ -17,6 +15,8 @@ const newsRoutes = require('./routes/newsRoutes');
 
 
 const app = express();
+
+app.set('trust proxy', true);  // Proxy beállítás
 
 // Middleware beállítások
 app.use(express.json());
