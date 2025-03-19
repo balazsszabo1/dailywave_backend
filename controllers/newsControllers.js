@@ -4,7 +4,7 @@ const upload = require('../middleware/multer');  // A multer konfiguráció impo
 // Hír feltöltés és képfeltöltés
 const uploadNews = (req, res) => {
     // A Multer middleware használata a fájl feltöltésére
-    upload(req, res, (err) => {
+    upload.single('index_pic')(req, res, (err) => {  // Az "index_pic" az a mező, amelyet a Postman-ben beállítasz a fájlhoz
         if (err) {
             return res.status(400).json({ error: 'Hiba történt a fájl feltöltésekor: ' + err.message });
         }
