@@ -5,7 +5,8 @@ const { uploadNews, getAllNews } = require('../controllers/newsControllers');
 const router = express.Router();
 
 // Hír feltöltése (csak hitelesített felhasználóknak)
-router.post('/uploadNews', authenticateToken, uploadNews);
+router.post('/uploadNews', uploadNews);
+
 
 // Hírek lekérése (nyilvános vagy hitelesítéssel)
 router.get('/getAllNews', getAllNews);  // Ha nem kell hitelesítés a lekéréshez
