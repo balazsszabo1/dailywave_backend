@@ -4,7 +4,7 @@ const { uploadNews, getAllNews } = require('../controllers/newsControllers')
 
 const router = express.Router();
 
-router.post('/uploadnews', authenticateToken, uploadNews);
+router.post('/uploadNews', authenticateToken, uploadNews);
 router.get('/getAllNews', authenticateToken, getAllNews);
 
 module.exports = router;
