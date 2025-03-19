@@ -3,6 +3,8 @@ const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
+app.set('trust proxy', true);  // Proxy beállítás
+
 // Sajat csomagok importálása
 const limiter = require('./middleware/limiter');
 const authenticateToken = require('./middleware/jwtAuth');
