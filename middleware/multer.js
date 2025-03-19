@@ -15,8 +15,12 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const now = new Date().toISOString().split('T')[0];
-        // Ha a req.user.id nincs beállítva, generálj egy random ID-t vagy hagyd el
+        
+        // Ellenőrizzük, hogy a req.user.id rendelkezésre áll-e
+        // Ha nem, akkor egy alapértelmezett 'default' értéket adunk
         const userId = req.user && req.user.id ? req.user.id : 'default';
+        
+        // Fájl neve: userId-dátum-fájlneve
         cb(null, `${userId}-${now}-${file.originalname}`);
     }
 });
