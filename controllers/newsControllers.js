@@ -1,5 +1,5 @@
 const db = require('../models/db');
-const upload = require('../middleware/multer');  // A multer konfiguráció importálása
+const upload = require('../middleware/multer')  // A multer konfiguráció importálása
 
 // Hír feltöltés és képfeltöltés
 const uploadNews = (req, res) => {
