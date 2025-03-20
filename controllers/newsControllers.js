@@ -18,7 +18,7 @@ const uploadNews = (req, res) => {
         }
 
         // Kategória validálás (csak a számokat engedélyezzük, 1, 2, 3, 4)
-        const validCategories = [1, 2, 3, 4];  // Az érvényes kategória ID-k
+        const validCategories = [1, 2, 3, 4, 5];  // Az érvényes kategória ID-k
         if (!validCategories.includes(Number(cat_id))) {
             return res.status(400).json({ error: 'Érvénytelen kategória.' });
         }
