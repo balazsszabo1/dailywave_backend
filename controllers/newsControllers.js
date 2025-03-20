@@ -37,7 +37,7 @@ const uploadNews = (req, res) => {
 
 // Hírek lekérése
 const getAllNews = (req, res) => {
-    const sql = "SELECT cat_id, news_title, news, index_pic FROM news";
+    const sql = "SELECT * FROM news";
 
     db.query(sql, (error, results) => {
         if (error) {
