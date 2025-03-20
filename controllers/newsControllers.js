@@ -1,51 +1,75 @@
-const db = require('../models/db');
-const upload = require('../middleware/multer');  // A multer konfiguráció importálása
+let selectedCategoryId = null;
+const categoryElements = document.querySelectorAll('.kategoriavalaszto');
+const fileInput = document.getElementById('fileInput');
+const kepHely = document.querySelector('.kephozzaadas img');  // Az a <img>, amit frissítünk majd
 
-// Hír feltöltés és képfeltöltés
-const uploadNews = (req, res) => {
-    // A Multer middleware használata a fájl feltöltésére
-    upload.single('index_pic')(req, res, (err) => {  // Az "index_pic" az a mező, amelyet a Postman-ben beállítasz a fájlhoz
-        if (err) {
-            return res.status(400).json({ error: 'Hiba történt a fájl feltöltésekor: ' + err.message });
-        }
+// Kategória választás eseménykezelő
+categoryElements.forEach(elem => {
+  elem.addEventListener('click', () => {
+    categoryElements.forEach(el => el.classList.remove('kivalasztva')); // törli az előzőt
+    elem.classList.add('kivalasztva'); // kijelöli az aktuálisat
+    selectedCategoryId = elem.getAttribute('data-kategoria');
+    console.log('Kiválasztott kategória:', selectedCategoryId);
+  });
+});
 
-        const { cat_id, news_title, news } = req.body;
-        const index_pic = req.file ? req.file.filename : null;
+// Kép kiválasztás és előnézet megjelenítés
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
 
-        // Minden mező validálása
-        if (!cat_id || !news_title || !news || !index_pic) {
-            return res.status(400).json({ error: 'Minden mező kitöltése kötelező.' });
-        }
+  if (file) {
+    const reader = new FileReader();
 
-        // Kategória validálás (csak a számokat engedélyezzük, 1, 2, 3, 4)
-        const validCategories = [1, 2, 3, 4];  // Az érvényes kategória ID-k
-        if (!validCategories.includes(Number(cat_id))) {
-            return res.status(400).json({ error: 'Érvénytelen kategória.' });
-        }
+    reader.onload = (e) => {
+      kepHely.src = e.target.result;  // Frissíti a kép src-jét a betöltött fájl adatával
+    };
 
-        // A hír és a kép mentése az adatbázisba
-        const query = 'INSERT INTO news (cat_id, news_title, news, index_pic) VALUES (?, ?, ?, ?)';
-        db.query(query, [cat_id, news_title, news, index_pic], (err, result) => {
-            if (err) {
-                console.error('Database insert error:', err);
-                return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
-            }
-            res.status(201).json({ message: 'Hír sikeresen feltöltve.', news_id: result.insertId });
-        });
-    });
-};
+    reader.readAsDataURL(file);
+  }
+});
 
-// Hírek lekérése
-const getAllNews = (req, res) => {
-    const sql = "SELECT cat_id, news_title, news, index_pic FROM news";
+document.getElementById('mentesGomb').addEventListener('click', () => {
+  const titleInput = document.getElementById('new-name');
+  const descriptionInput = document.getElementById('new-description');
 
-    db.query(sql, (error, results) => {
-        if (error) {
-            console.error("Hiba a hírek lekérése során:", error);
-            return res.status(500).json({ error: "Hiba történt a hírek lekérése közben." });
-        }
-        res.json(results);
-    });
-};
+  const news_title = titleInput.value.trim();
+  const news = descriptionInput.value.trim();
+  const cat_id = selectedCategoryId;
+  const index_pic = fileInput.files[0];
 
-module.exports = { uploadNews, getAllNews };
+  if (!cat_id || !news_title || !news || !index_pic) {
+    alert('Minden mező kitöltése kötelező!');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('cat_id', cat_id);
+  formData.append('news_title', news_title);
+  formData.append('news', news);
+  formData.append('index_pic', index_pic);
+
+  fetch('/api/news/uploadNews', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      alert('Hiba: ' + data.error);
+    } else {
+      alert('Sikeres feltöltés!');
+
+      // Űrlap alaphelyzetbe állítása
+      titleInput.value = '';
+      descriptionInput.value = '';
+      fileInput.value = '';
+      kepHely.src = 'img/beszúrás.png';  // Reset az eredeti képre
+      categoryElements.forEach(el => el.classList.remove('kivalasztva'));
+      selectedCategoryId = null;
+    }
+  })
+  .catch(error => {
+    console.error('Hiba a feltöltés során:', error);
+    alert('Hiba történt a feltöltés közben.');
+  });
+});
