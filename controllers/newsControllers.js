@@ -44,8 +44,20 @@ const getAllNews = (req, res) => {
             console.error("Hiba a hírek lekérése során:", error);
             return res.status(500).json({ error: "Hiba történt a hírek lekérése közben." });
         }
-        res.json(results);
+
+        // Ellenőrizzük, hogy van-e hír, és hogy van index_pic (ha igen, akkor a kép elérhetősége)
+        if (results.length > 0 && results[0].index_pic) {
+            return res.json({
+                news: results,  // Az összes hír adatát küldjük vissza
+                index_pic: `/uploads/${results[0].index_pic}`  // Az index kép URL-jét
+            });
+        } else {
+            return res.json({ news: results, index_pic: null });
+        }
     });
 };
+
+
+
 
 module.exports = { uploadNews, getAllNews };
