@@ -10,7 +10,7 @@ const uploadNews = (req, res) => {
         }
 
         const { cat_id, news_title, news } = req.body;
-        const index_pic = req.file ? req.file.filename : null;
+        const index_pic = req.file ? `/uploads/${req.file.filename}` : null; // A fájl elérési útja
 
         // Minden mező validálása
         if (!cat_id || !news_title || !news || !index_pic) {
