@@ -10,7 +10,7 @@ const uploadNews = (req, res) => {
         }
 
         const { cat_id, news_title, news } = req.body;
-        const index_pic = req.file ? `/uploads/${req.file.filename}` : null; // A fájl elérési útja
+        const index_pic = req.file ? req.file.filename : null;
 
         // Minden mező validálása
         if (!cat_id || !news_title || !news || !index_pic) {
@@ -44,20 +44,8 @@ const getAllNews = (req, res) => {
             console.error("Hiba a hírek lekérése során:", error);
             return res.status(500).json({ error: "Hiba történt a hírek lekérése közben." });
         }
-
-        // Ellenőrizzük, hogy van-e hír, és hogy van index_pic (ha igen, akkor a kép elérhetősége)
-        if (results.length > 0 && results[0].index_pic) {
-            return res.json({
-                news: results,  // Az összes hír adatát küldjük vissza
-                index_pic: `/uploads/${results[0].index_pic}`  // Az index kép URL-jét
-            });
-        } else {
-            return res.json({ news: results, index_pic: null });
-        }
+        res.json(results);
     });
 };
-
-
-
 
 module.exports = { uploadNews, getAllNews };
