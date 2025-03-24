@@ -28,7 +28,7 @@ app.use(cors({
 }));
 
 // Statikus fájlok elérhetősége
-app.use('/uploads', authenticateToken, express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/auth', authRoutes)
 app.use('/api/topics', topicRoutes)
