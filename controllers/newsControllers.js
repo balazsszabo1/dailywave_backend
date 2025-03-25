@@ -52,7 +52,7 @@ const getAllNews = (req, res) => {
 // Hírek lekérése egyedileg az ID alapján
  const getAllNewsByID = (req, res) => {
     const { id } = req.query; // Az ID a query paraméterek között
-    const query = 'SELECT * FROM news WHERE id = ?';
+    const query = 'SELECT * FROM news WHERE news_id = ?';
     
     db.query(query, [id], (err, result) => {
       if (err) {
