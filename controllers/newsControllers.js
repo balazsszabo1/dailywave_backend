@@ -50,7 +50,7 @@ const getAllNews = (req, res) => {
 
 
 // Hírek lekérése egyedileg az ID alapján
-app.get('/api/news/getNewsById', (req, res) => {
+ const getAllNewsByID = (req, res) => {
     const { id } = req.query; // Az ID a query paraméterek között
     const query = 'SELECT * FROM news WHERE id = ?';
     
@@ -63,6 +63,6 @@ app.get('/api/news/getNewsById', (req, res) => {
       }
       res.json(result[0]); // Az első találatot küldjük vissza
     });
-  });
+  };
   
-module.exports = { uploadNews, getAllNews };
+module.exports = { uploadNews, getAllNews, getAllNewsByID};

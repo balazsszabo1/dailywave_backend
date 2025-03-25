@@ -1,6 +1,6 @@
 const express = require('express');
 const authenticateToken = require('../middleware/jwtAuth');
-const { uploadNews, getAllNews } = require('../controllers/newsControllers');
+const { uploadNews, getAllNews, getAllNewsByID } = require('../controllers/newsControllers');
 
 const router = express.Router();
 
@@ -12,6 +12,6 @@ router.post('/uploadNews', uploadNews);
 router.get('/getAllNews', getAllNews);  // Ha nem kell hitelesítés a lekéréshez
 
 // Hír lekérése ID alapján
-router.get('/getNewsById', getNewsById);
+router.get('/getNewsById', getAllNewsByID);
 
 module.exports = router;
