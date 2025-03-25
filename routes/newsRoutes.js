@@ -11,4 +11,7 @@ router.post('/uploadNews', uploadNews);
 // Hírek lekérése (nyilvános vagy hitelesítéssel)
 router.get('/getAllNews', getAllNews);  // Ha nem kell hitelesítés a lekéréshez
 
+// Hír lekérése ID alapján
+router.get('/getNewsById', getNewsById);
+
 module.exports = router;
