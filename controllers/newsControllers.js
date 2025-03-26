@@ -53,10 +53,9 @@ const getAllNews = (req, res) => {
  const getAllNewsByID = (req, res) => {
     const { news_id } = req.query; // Az ID a query paraméterek között
     const query = 'SELECT * FROM news WHERE news_id = ?';
-    console.log(news_id)
-   
+   console.log(news_id)
     
-    db.query(query, [], (err, result) => {
+    db.query(query, [news_id], (err, result) => {
       if (err) {
         return res.status(500).json({ error: 'Hiba a hír lekérése során.' });
       }
