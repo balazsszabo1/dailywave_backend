@@ -36,5 +36,6 @@ app.use('/api/topics', topicRoutes)
 app.use('/api/profile', profileRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/news', newsRoutes);
 
 module.exports = app;

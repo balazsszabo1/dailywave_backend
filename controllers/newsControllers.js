@@ -66,4 +66,28 @@ const getAllNews = (req, res) => {
     });
   };
   
-module.exports = { uploadNews, getAllNews, getAllNewsByID};
+
+
+  const searchNews = (req, res) => {
+    const { query } = req.query;  // A keresési kifejezés a query paraméterek között
+
+    if (!query) {
+        return res.status(400).json({ error: 'Keresési kifejezés szükséges' });
+    }
+
+    // SQL lekérdezés a news_title keresésére
+    const sql = 'SELECT news_title FROM news WHERE news_title LIKE ?';
+    
+    db.query(sql, [`%${query}%`], (err, result) => {
+        if (err) {
+            console.error('Hiba a keresés során:', err);
+            return res.status(500).json({ error: 'Belső hiba történt a keresés során' });
+        }
+
+        // Visszaadjuk a találatokat
+        return res.status(200).json({ results: result });
+    });
+};
+
+module.exports = { uploadNews, getAllNews, getAllNewsByID, searchNews};
+
