@@ -84,10 +84,16 @@ const getAllNews = (req, res) => {
             return res.status(500).json({ error: 'Belső hiba történt a keresés során' });
         }
 
+        // Ha nincs találat
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'Nem létezik ilyen szöveg' });
+        }
+
         // Visszaadjuk a találatokat
         return res.status(200).json({ results: result });
     });
 };
+
 
 module.exports = { uploadNews, getAllNews, getAllNewsByID, searchNews};
 
