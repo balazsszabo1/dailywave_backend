@@ -14,6 +14,7 @@ router.get('/getAllNews', getAllNews);  // Ha nem kell hitelesítés a lekérés
 // Hír lekérése ID alapján
 router.get('/getNewsById', getAllNewsByID);
 
-router.get('/search', searchNews);
+// Keresés
+router.get('/getSearch/:search', searchNews);
 
 module.exports = router;

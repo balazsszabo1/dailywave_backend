@@ -69,30 +69,24 @@ const getAllNews = (req, res) => {
 
 
   const searchNews = (req, res) => {
-    const { query } = req.query;  // A keresési kifejezés a query paraméterek között
-
-    if (!query) {
-        return res.status(400).json({ error: 'Keresési kifejezés szükséges' });
-    }
-
-    // SQL lekérdezés a news_title keresésére
+    const { search } = req.params;
+    const keres = `%${search}%`;
     const sql = 'SELECT news_title FROM news WHERE news_title LIKE ?';
-    
-    db.query(sql, [`%${query}%`], (err, result) => {
+
+    db.query(sql, [keres], (err, result) => {  
         if (err) {
-            console.error('Hiba a keresés során:', err);
-            return res.status(500).json({ error: 'Belső hiba történt a keresés során' });
+            console.error(err);
+            return res.status(500).json({ error: 'Adatbázis hiba' });
         }
 
-        // Ha nincs találat
         if (result.length === 0) {
-            return res.status(404).json({ message: 'Nem létezik ilyen szöveg' });
+            return res.status(404).json({ message: 'Nem található ilyen hír.' });
         }
 
-        // Visszaadjuk a találatokat
-        return res.status(200).json({ results: result });
+        res.json(result);
     });
 };
+
 
 
 module.exports = { uploadNews, getAllNews, getAllNewsByID, searchNews};
