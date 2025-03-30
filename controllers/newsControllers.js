@@ -95,5 +95,28 @@ const getAllNews = (req, res) => {
 };
 
 
-module.exports = { uploadNews, getAllNews, getAllNewsByID, searchNews};
+
+
+
+// Feliratkozás feldolgozása
+const newsLetter = (req, res) => {
+    const { name, email } = req.body;
+  
+    // Ellenőrizzük, hogy mindkét adat megvan
+    if (!name || !email) {
+      return res.status(400).json({ message: 'A név és az email cím szükséges!' });
+    }
+  
+    // Az adat beszúrása a 'newsletter' táblába
+    const query = 'INSERT INTO newsletter (name, email) VALUES (?, ?)';
+    db.execute(query, [name, email], (err, result) => {
+      if (err) {
+        console.error('Hiba történt a feliratkozás során:', err);
+        return res.status(500).json({ message: 'Hiba történt a feliratkozás során' });
+      }
+      res.status(200).json({ message: 'Sikeres feliratkozás!' });
+    });
+  };
+
+module.exports = { uploadNews, getAllNews, getAllNewsByID, searchNews, newsLetter};
 
