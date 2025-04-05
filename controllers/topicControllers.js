@@ -34,7 +34,7 @@ const uploadTopic = (req, res) => {
     console.log(currentDate);
     
     db.query(`
-        INSERT INTO topic (topic_title, user_id, date) 
+        INSERT INTO topics (topic_title, user_id, date) 
         VALUES (?, ?, ?);
     `, [topic_title, user_id, currentDate], (err, result) => {
         if (err) {
