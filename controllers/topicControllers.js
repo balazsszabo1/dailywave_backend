@@ -16,7 +16,7 @@ const getAlltopics = (req, res) => {
 
 const uploadTopic = (req, res) => {
     console.log(req.user, req.user_id);
-    
+
     if (!req.user || !req.user.id) {
         return res.status(401).json({ error: 'Nem vagy bejelentkezve' });
     }
@@ -24,22 +24,21 @@ const uploadTopic = (req, res) => {
     const { topic_title } = req.body;
     const user_id = req.user.id;  // Most már biztos, hogy nem undefined
     console.log(`topic title: ${topic_title}, user_id: ${user_id}`);
-    
 
     if (!topic_title) {
-        return res.status(400).send("A cím megadása kötelező.");
+        return res.status(400).json({ error: "A cím megadása kötelező." });
     }
 
     const currentDate = new Date().toISOString();
     console.log(currentDate);
-    
+
     db.query(`
         INSERT INTO topic (topic_title, user_id, date) 
         VALUES (?, ?, ?);
     `, [topic_title, user_id, currentDate], (err, result) => {
         if (err) {
             console.error('Hiba történt a téma hozzáadása közben:', err);
-            return res.status(500).send("Hiba történt a témák hozzáadásakor");
+            return res.status(500).json({ error: "Hiba történt a témák hozzáadásakor" });
         }
 
         const newTopic = {
@@ -49,10 +48,11 @@ const uploadTopic = (req, res) => {
             date: currentDate,
         };
         console.log(newTopic);
-        
-        res.status(201).json(newTopic);
+
+        res.status(201).json(newTopic);  // Ha sikeres, JSON-ban küldjük vissza
     });
 };
+
 
 
 const getComments = (req, res) => {
