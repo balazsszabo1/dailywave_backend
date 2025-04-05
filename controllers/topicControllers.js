@@ -29,13 +29,16 @@ const uploadTopic = (req, res) => {
         return res.status(400).json({ error: "A cím megadása kötelező." });
     }
 
-    const currentDate = new Date().toISOString();
-    console.log(currentDate);
+    // A dátum konvertálása a MySQL DATETIME formátumra
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');  // 'YYYY-MM-DD HH:mm:ss'
+
+    console.log(formattedDate);
 
     db.query(`
         INSERT INTO topic (topic_title, user_id, date) 
         VALUES (?, ?, ?);
-    `, [topic_title, user_id, currentDate], (err, result) => {
+    `, [topic_title, user_id, formattedDate], (err, result) => {
         if (err) {
             console.error('Hiba történt a téma hozzáadása közben:', err);
             return res.status(500).json({ error: "Hiba történt a témák hozzáadásakor" });
@@ -45,15 +48,13 @@ const uploadTopic = (req, res) => {
             topic_id: result.insertId,
             topic_title: topic_title,
             user_id: user_id,
-            date: currentDate,
+            date: formattedDate,
         };
         console.log(newTopic);
 
-        res.status(201).json(newTopic);  // Ha sikeres, JSON-ban küldjük vissza
+        res.status(201).json(newTopic);
     });
 };
-
-
 
 const getComments = (req, res) => {
     const topicId = parseInt(req.params.topicId, 10);
