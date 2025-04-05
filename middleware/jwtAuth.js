@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
 const authenticateToken = (req, res, next) => {
-    console.log(req.cookies);  // 🔹 Nézd meg, hogy van-e token a cookie-k között
+    console.log(req.cookies);
     const token = req.cookies.auth_token;
 
     if (!token) {
@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
             return res.status(403).json({ error: 'Érvénytelen token' });
         }
 
-        console.log('🔹 Dekódolt token:', user);  // 🔹 Ellenőrizd, hogy a token tartalmazza-e a role-t
+        console.log('🔹 Dekódolt token:', user);
         req.user = user;
         next();
     });

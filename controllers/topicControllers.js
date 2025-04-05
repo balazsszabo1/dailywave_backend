@@ -5,8 +5,8 @@ const getAlltopics = (req, res) => {
         SELECT * FROM topic JOIN users USING(user_id) ORDER BY topic.date DESC;
     `, (err, results) => {
         if (err) {
-            console.error(`adatbázis hiba a topicok lekérésekor: ${err}`);
-            return res.status(500).send("Database error");
+            console.error(`Adatbázis hiba a témák lekérésekor: ${err}`);
+            return res.status(500).send("Adatbázis hiba");
         }
         console.log(results);
 
@@ -23,7 +23,7 @@ const uploadTopic = (req, res) => {
 
     const { topic_title } = req.body;
     const user_id = req.user.id;  // Most már biztos, hogy nem undefined
-    console.log(`topic title: ${topic_title}, user_id: ${user_id}`);
+    console.log(`Téma cím: ${topic_title}, user_id: ${user_id}`);
 
     if (!topic_title) {
         return res.status(400).json({ error: "A cím megadása kötelező." });
@@ -41,7 +41,7 @@ const uploadTopic = (req, res) => {
     `, [topic_title, user_id, formattedDate], (err, result) => {
         if (err) {
             console.error('Hiba történt a téma hozzáadása közben:', err);
-            return res.status(500).json({ error: "Hiba történt a témák hozzáadásakor" });
+            return res.status(500).json({ error: "Hiba történt a téma hozzáadásakor" });
         }
 
         const newTopic = {
@@ -61,7 +61,7 @@ const getComments = (req, res) => {
     console.log(topicId);
 
     if (isNaN(topicId)) {
-        return res.status(400).json({ error: 'Invalid topic ID' });
+        return res.status(400).json({ error: 'Érvénytelen téma ID' });
     }
 
     db.query(`
@@ -71,21 +71,20 @@ const getComments = (req, res) => {
         WHERE comments.topic_id = ?;
     `, [topicId], (err, results) => {
         if (err) {
-            console.error('Error fetching comments:', err);
-            return res.status(500).json({ error: 'Database error' });
+            console.error('Hiba a kommentek lekérésekor:', err);
+            return res.status(500).json({ error: 'Adatbázis hiba' });
         }
 
-        res.json(results);  // A válasz most már tartalmazza a username-t is
+        res.json(results);  // A válasz most már tartalmazza a felhasználónevet is
     });
 };
-
 
 const addComment = async (req, res) => {
     const { topic_id, comment, user_id } = req.body;
     console.log(topic_id, comment, user_id);
 
     if (!topic_id || !comment || !user_id) {
-        return res.status(400).json({ message: "Missing required fields" });
+        return res.status(400).json({ message: "Hiányzó kötelező mezők" });
     }
 
     try {
@@ -94,10 +93,10 @@ const addComment = async (req, res) => {
             [topic_id, comment, user_id]
         );
 
-        res.status(201).json({ message: "Comment added successfully" });
+        res.status(201).json({ message: "Komment sikeresen hozzáadva" });
     } catch (error) {
-        console.error("Error adding comment:", error);
-        res.status(500).json({ message: "An error occurred while adding the comment", error: error.message });
+        console.error("Hiba a komment hozzáadásakor:", error);
+        res.status(500).json({ message: "Hiba történt a komment hozzáadásakor", error: error.message });
     }
 };
 

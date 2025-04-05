@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs')
-const validator = require('validator')
+const bcrypt = require('bcryptjs');
+const validator = require('validator');
 const db = require('../models/db');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/dotenvConfig').config;
 
 const login = (req, res) => {
@@ -48,7 +48,6 @@ const login = (req, res) => {
                     JWT_SECRET,
                     { expiresIn: '1y' }
                 );
-
 
                 res.cookie('auth_token', token, {
                     httpOnly: true,
@@ -127,5 +126,4 @@ const logout = (req, res) => {
     res.status(200).json({ message: 'Sikeresen kijelentkeztél' });
 };
 
-
-module.exports = { register, login, logout }
+module.exports = { register, login, logout };

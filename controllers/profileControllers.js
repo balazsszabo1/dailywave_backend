@@ -15,31 +15,32 @@ const editProfileName = (req, res) => {
             return res.status(500).json({ error: 'Hiba az SQL-ben' });
         }
 
-        return res.status(200).json({ message: 'Név frissítve ' });
+        return res.status(200).json({ message: 'Név frissítve' });
     });
 };
 
 const getProfileName = (req, res) => {
     const user_id = req.user.id;
-    console.log('User ID:', user_id);  // Logolj a konzolra, hogy tényleg van-e user_id
+    console.log('Felhasználó ID:', user_id);  // Logolj a konzolra, hogy tényleg van-e user_id
 
     const sql = 'SELECT username FROM users WHERE user_id = ?';
     db.query(sql, [user_id], (err, result) => {
         if (err) {
-            console.error('Error querying the database:', err);
+            console.error('Hiba a lekérdezésnél:', err);
             return res.status(500).json({ error: 'Hiba a név lekérésekor' });
         }
 
-        console.log('Query result:', result);  // Logolj, hogy mit ad vissza a lekérdezés
+        console.log('Lekérdezés eredménye:', result);  // Logolj, hogy mit ad vissza a lekérdezés
 
         if (result.length > 0) {
             return res.json({ name: result[0].username });  // Visszaadjuk a 'name' kulcsot
         } else {
-            console.log('No user found with ID:', user_id);
+            console.log('Nem található felhasználó ezzel az ID-val:', user_id);
             return res.status(404).json({ error: 'Név nem található' });
         }
     });
 };
+
 const editProfilePsw = (req, res) => {
     const psw = req.body.psw;
     const user_id = req.user.id;
@@ -71,25 +72,24 @@ const editProfilePic = (req, res) => {
     const profile_picture = req.file ? req.file.filename : null;
 
     if (!user_id) {
-        return res.status(400).json({ error: 'User ID is required' });
+        return res.status(400).json({ error: 'A felhasználó ID-ja kötelező' });
     }
 
     const sql = 'UPDATE users SET profile_picture = COALESCE(NULLIF(?, ""), profile_picture) WHERE user_id = ?';
 
     db.query(sql, [profile_picture, user_id], (err, result) => {
         if (err) {
-            console.error('SQL Error: ', err);  // Log the error for debugging
-            return res.status(500).json({ error: 'Database error, please try again later.' });
+            console.error('SQL hiba: ', err);  // Logold a hibát a hibakereséshez
+            return res.status(500).json({ error: 'Adatbázis hiba, kérlek próbáld újra később.' });
         }
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'Felhasználó nem található' });
         }
 
-        return res.status(200).json({ message: 'Profile picture updated successfully' });
+        return res.status(200).json({ message: 'Profilkép sikeresen frissítve' });
     });
 };
-
 
 const getProfilePic = (req, res) => {
     const user_id = req.user.id;

@@ -1,6 +1,5 @@
 const express = require('express');
 const authenticateToken = require('../middleware/jwtAuth');
-// const upload = require('../middleware/multer'); // nem kell most
 const { getAlltopics, getComments, addComment, uploadTopic } = require('../controllers/topicControllers');
 
 const router = express.Router();

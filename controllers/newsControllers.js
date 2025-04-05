@@ -1,5 +1,5 @@
 const db = require('../models/db');
-const upload = require('../middleware/multer');  // A multer konfiguráció importálása
+const upload = require('../middleware/multer');  // A Multer konfiguráció importálása
 
 // Hír feltöltés és képfeltöltés
 const uploadNews = (req, res) => {
@@ -27,7 +27,7 @@ const uploadNews = (req, res) => {
     const query = 'INSERT INTO news (cat_id, news_title, news, index_pic) VALUES (?, ?, ?, ?)';
     db.query(query, [cat_id, news_title, news, index_pic], (err, result) => {
       if (err) {
-        console.error('Database insert error:', err);
+        console.error('Hiba történt az adatbázisba történő beszúráskor:', err);
         return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
       }
       res.status(201).json({ message: 'Hír sikeresen feltöltve.', news_id: result.insertId });
@@ -48,7 +48,6 @@ const getAllNews = (req, res) => {
   });
 };
 
-
 // Hírek lekérése egyedileg az ID alapján
 const getAllNewsByID = (req, res) => {
   const { news_id } = req.query; // Az ID a query paraméterek között
@@ -66,8 +65,7 @@ const getAllNewsByID = (req, res) => {
   });
 };
 
-
-
+// Hírek keresése
 const searchNews = (req, res) => {
   const { query } = req.query;  // A keresési kifejezés a query paraméterek között
 
@@ -94,10 +92,6 @@ const searchNews = (req, res) => {
   });
 };
 
-
-
-
-
 // Feliratkozás feldolgozása
 const newsLetter = (req, res) => {
   const { name, email } = req.body;
@@ -119,4 +113,3 @@ const newsLetter = (req, res) => {
 };
 
 module.exports = { uploadNews, getAllNews, getAllNewsByID, searchNews, newsLetter };
-
