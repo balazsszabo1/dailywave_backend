@@ -18,10 +18,10 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const now = new Date().toISOString().split('T')[0];
-        
+
         // Ha van user azonosító (JWT alapján), hozzárendeljük a fájl nevéhez, különben "default"
         const userId = req.user && req.user.id ? req.user.id : 'default';
-        
+
         // A fájl neve: userId-dátum-eredetiFájlnév
         cb(null, `${userId}-${now}-${file.originalname}`);
     }

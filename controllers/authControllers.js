@@ -7,7 +7,7 @@ const { JWT_SECRET } = require('../config/dotenvConfig').config;
 const login = (req, res) => {
     const { email, password } = req.body;
     console.log(email, password);
-    
+
     const errors = [];
     if (!validator.isEmail(email)) {
         errors.push({ error: 'Add meg az email címet' });
@@ -21,7 +21,7 @@ const login = (req, res) => {
         return res.status(400).json({ errors });
     }
     console.log(errors);
-    
+
     const sql = 'SELECT * FROM users WHERE email LIKE ?';
     db.query(sql, [email], (err, result) => {
         if (err) {
@@ -33,10 +33,10 @@ const login = (req, res) => {
             return res.status(401).json({ error: 'Helytelen email cím vagy jelszó' });
         }
         console.log(result);
-        
+
         const user = result[0];
         console.log(user);
-        
+
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) {
                 console.error('Jelszó összehasonlítási hiba:', err);
@@ -48,7 +48,7 @@ const login = (req, res) => {
                     JWT_SECRET,
                     { expiresIn: '1y' }
                 );
-                
+
 
                 res.cookie('auth_token', token, {
                     httpOnly: true,
@@ -69,7 +69,7 @@ const register = async (req, res) => {
     const { email, password, name } = req.body;
     const errors = [];
     console.log(email, password, name);
-    
+
     if (!email || !validator.isEmail(email)) {
         errors.push({ error: 'Nem valós email' });
     }
@@ -87,7 +87,7 @@ const register = async (req, res) => {
     }
 
     console.log(errors);
-    
+
     try {
         const [existingUsers] = await db.promise().query(
             'SELECT * FROM users WHERE email = ? OR username = ?',

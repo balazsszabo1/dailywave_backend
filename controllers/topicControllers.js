@@ -9,7 +9,7 @@ const getAlltopics = (req, res) => {
             return res.status(500).send("Database error");
         }
         console.log(results);
-        
+
         res.json(results);
     });
 };
@@ -59,28 +59,31 @@ const uploadTopic = (req, res) => {
 const getComments = (req, res) => {
     const topicId = parseInt(req.params.topicId, 10);
     console.log(topicId);
-    
+
     if (isNaN(topicId)) {
         return res.status(400).json({ error: 'Invalid topic ID' });
     }
 
     db.query(`
-        SELECT * FROM comments 
-        WHERE topic_id = ?;
+        SELECT comments.comment, users.username 
+        FROM comments
+        JOIN users ON comments.user_id = users.user_id
+        WHERE comments.topic_id = ?;
     `, [topicId], (err, results) => {
         if (err) {
             console.error('Error fetching comments:', err);
             return res.status(500).json({ error: 'Database error' });
         }
 
-        res.json(results);
+        res.json(results);  // A válasz most már tartalmazza a username-t is
     });
 };
+
 
 const addComment = async (req, res) => {
     const { topic_id, comment, user_id } = req.body;
     console.log(topic_id, comment, user_id);
-    
+
     if (!topic_id || !comment || !user_id) {
         return res.status(400).json({ message: "Missing required fields" });
     }
