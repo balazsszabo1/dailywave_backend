@@ -80,10 +80,15 @@ const getComments = (req, res) => {
 };
 
 const addComment = async (req, res) => {
-    const { topic_id, comment, user_id } = req.body;
-    console.log(topic_id, comment, user_id);
+    const { topic_id, comment } = req.body;
 
-    if (!topic_id || !comment || !user_id) {
+    if (!req.user || !req.user.id) {
+        return res.status(401).json({ message: "Nem vagy bejelentkezve" });
+    }
+
+    const user_id = req.user.id;
+
+    if (!topic_id || !comment) {
         return res.status(400).json({ message: "Hiányzó kötelező mezők" });
     }
 
