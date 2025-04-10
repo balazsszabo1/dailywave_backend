@@ -13,10 +13,9 @@ A **DailyWave Hírportál** backendje egy Node.js és Express alapú API, amely 
 A backend telepítése a következő lépésekkel történik:
 
 ### 1. Klónozd a repót
-```bash
-git clone https://github.com/balazsszabo1/dailywave_backend.git
-cd dailywave-backend
-npm install
+git clone https://github.com/balazsszabo1/dailywave_backend.git  
+cd dailywave-backend  
+npm install  
 npm run dev
 
 
