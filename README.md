@@ -205,6 +205,41 @@ A backend szerver folyamatosan képes lekérni a legújabb változtatásokat kö
 
 Ez biztosítja, hogy a kód mindig naprakész legyen, és az új változtatások automatikusan tükröződjenek a szerveren.
 
+## Biztonság és Titkosítás
+
+A backend biztosítja az alapvető biztonsági mechanizmusokat az alkalmazás védelme érdekében. A következő megoldások kerültek implementálásra:
+
+### 1. JWT Token-alapú hitelesítés
+Az API végpontjai számára biztosított hitelesítés **JSON Web Token (JWT)** alapú. Minden felhasználónak regisztráció után érvényes JWT token-t adunk, amelyet a későbbi API kérésekhez használnak, így biztosítva a hozzáférés védelmét.
+
+### 2. SSL Titkosítás
+Az adatbiztonság érdekében a backend API **HTTPS-en** keresztül érhető el, biztosítva, hogy minden adat titkosítva legyen a kliens és a szerver között, ezzel elkerülve az adatlopásokat és lehallgatást.
+
+### 3. Felhasználói adatok védelme
+A felhasználók érzékeny adatainak, mint például a jelszavak, titkosítása **bcrypt hash**-el történik, hogy még adatlopás esetén sem legyenek elérhetők az eredeti jelszavak. Az API minden jelszóváltoztatást és regisztrációt biztonságos módon kezel.
+
+---
+
+## Hibakezelés és Naplózás
+
+### 1. Hibakezelés
+A backendben a **hibakezelés** központilag van megoldva, hogy minden nem várt esemény a megfelelő válaszformátumban kerüljön továbbításra a frontend felé. A hibák megfelelő kódokkal (pl. 404, 500) vannak jelezve, és az API minden esetben részletes hibaüzenetet biztosít.
+
+### 2. Naplózás
+Az alkalmazás **naplózza** a rendszer működését és az API kéréseket. A naplózási információk, mint például az API hívások időpontja, kérés típusai és válaszok, segítenek a hibák gyors diagnosztizálásában és a rendszer általános teljesítményének nyomon követésében. A naplózás konfigurálása az **express-winston** csomag segítségével történik, és a naplóadatok egy központi rendszerbe kerülhetnek továbbításra a későbbi elemzéshez.
+
+## Tesztelés
+A backend API tesztelését a **Postman** eszközzel végeztük. A következő teszteket futtattuk le a különböző API végpontokon, hogy biztosítsuk azok helyes működését:
+
+- **Felhasználói regisztráció** (POST `/api/auth/register`)
+- **Bejelentkezés** (POST `/api/auth/login`)
+- **Profil név szerkesztése** (POST `/api/profile/editProfileName`)
+- **Hírek feltöltése** (POST `/api/news/uploadNews`)
+- **Komment hozzáadása** (POST `/api/topic/addComment`)
+- **Admin jogosultság ellenőrzése** (POST `/api/admin/admin-only`)
+
+A Postman tesztekről készült összes tesztelési link és dokumentáció elérhető [itt](https://link_az_osszes_teszthez).
+
 
 
 
