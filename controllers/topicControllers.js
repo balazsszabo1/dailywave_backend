@@ -22,16 +22,15 @@ const uploadTopic = (req, res) => {
     }
 
     const { topic_title } = req.body;
-    const user_id = req.user.id;  // Most már biztos, hogy nem undefined
+    const user_id = req.user.id;
     console.log(`Téma cím: ${topic_title}, user_id: ${user_id}`);
 
     if (!topic_title) {
         return res.status(400).json({ error: "A cím megadása kötelező." });
     }
 
-    // A dátum konvertálása a MySQL DATETIME formátumra
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');  // 'YYYY-MM-DD HH:mm:ss'
+    const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
 
     console.log(formattedDate);
 
@@ -75,7 +74,7 @@ const getComments = (req, res) => {
             return res.status(500).json({ error: 'Adatbázis hiba' });
         }
 
-        res.json(results);  // A válasz most már tartalmazza a felhasználónevet is
+        res.json(results);
     });
 };
 

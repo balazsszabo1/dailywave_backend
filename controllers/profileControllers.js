@@ -21,7 +21,7 @@ const editProfileName = (req, res) => {
 
 const getProfileName = (req, res) => {
     const user_id = req.user.id;
-    console.log('Felhasználó ID:', user_id);  // Logolj a konzolra, hogy tényleg van-e user_id
+    console.log('Felhasználó ID:', user_id);
 
     const sql = 'SELECT username FROM users WHERE user_id = ?';
     db.query(sql, [user_id], (err, result) => {
@@ -30,10 +30,10 @@ const getProfileName = (req, res) => {
             return res.status(500).json({ error: 'Hiba a név lekérésekor' });
         }
 
-        console.log('Lekérdezés eredménye:', result);  // Logolj, hogy mit ad vissza a lekérdezés
+        console.log('Lekérdezés eredménye:', result);
 
         if (result.length > 0) {
-            return res.json({ name: result[0].username });  // Visszaadjuk a 'name' kulcsot
+            return res.json({ name: result[0].username });
         } else {
             console.log('Nem található felhasználó ezzel az ID-val:', user_id);
             return res.status(404).json({ error: 'Név nem található' });
@@ -79,7 +79,7 @@ const editProfilePic = (req, res) => {
 
     db.query(sql, [profile_picture, user_id], (err, result) => {
         if (err) {
-            console.error('SQL hiba: ', err);  // Logold a hibát a hibakereséshez
+            console.error('SQL hiba: ', err);
             return res.status(500).json({ error: 'Adatbázis hiba, kérlek próbáld újra később.' });
         }
 

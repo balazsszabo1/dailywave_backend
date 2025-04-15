@@ -3,11 +3,9 @@ const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
-// Sajat csomagok importálása
 const limiter = require('./middleware/limiter');
 const authenticateToken = require('./middleware/jwtAuth');
 
-// Útvonalak importálása
 const authRoutes = require('./routes/authRoutes');
 const topicRoutes = require('./routes/topicRoutes');
 const profileRoutes = require('./routes/profileRoutes');

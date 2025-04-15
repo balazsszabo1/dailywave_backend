@@ -44,7 +44,7 @@ const login = (req, res) => {
             }
             if (isMatch) {
                 const token = jwt.sign(
-                    { id: user.user_id, role: user.role }, // 🔹 Adj hozzá egy role mezőt!
+                    { id: user.user_id, role: user.role },
                     JWT_SECRET,
                     { expiresIn: '1y' }
                 );
