@@ -8,6 +8,57 @@ A **DailyWave Hírportál** backendje egy Node.js és Express alapú API, amely 
 - **Express.js** - Web keretrendszer, amely lehetővé teszi a REST API gyors fejlesztését.
 - **MySQL** - Relációs adatbázis a háttéradatok tárolásához.
 
+## Adatbázis
+● category
+    ○ cat_id
+    ○ cat_name
+
+● comments
+    ○ comment_id
+    ○ comment
+    ○ user_id
+    ○ topic_id
+    ○ date
+
+● news
+    ○ news_id
+    ○ cat_id
+    ○ news_title
+    ○ news
+    ○ index_pic
+
+● newsletter
+    ○ newsletter_id
+    ○ name
+    ○ email
+
+● pictures
+    ○ picture_id
+    ○ picture
+    ○ news_id
+
+● ratings
+    ○ comment_id
+    ○ user_id
+    ○ plus
+    ○ minus
+
+● topic
+    ○ topic_id
+    ○ topic_title
+    ○ user_id
+    ○ date
+
+● users
+    ○ user_id
+    ○ email
+    ○ password
+    ○ role
+    ○ profile_picture
+    ○ username
+
+
+
 ## Telepítés
 
 A backend telepítése a következő lépésekkel történik:
