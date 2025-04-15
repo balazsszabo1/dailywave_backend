@@ -197,23 +197,22 @@ A Postman tesztekről készült összes tesztelési link és dokumentáció elé
 ## 🌐 Frontend
 
 ### 🔗 GitHub repo
-- [Frontend](https://github.com/your-repo-url)
+- [Frontend](https://github.com/balazsszabo1/dailywave_frontend)
 
 ---
 
 ## 🛠️ Használt eszközök
 
+
 - [Visual Studio Code](https://code.visualstudio.com/)
-- [MDN Web Docs](https://developer.mozilla.org/)
 - [NPM](https://www.npmjs.com/)
 - [Postman](https://www.postman.com/)
 - [DrawSQL](https://drawsql.app/)
 - [W3Schools](https://www.w3schools.com/)
-- [StackOverflow](https://stackoverflow.com/)
 - [ChatGPT](https://chat.openai.com/)
-- [Tabnine](https://www.tabnine.com/)
 - [GitHub](https://github.com/)
 - [Google Drive](https://drive.google.com/)
+- [Bootstrap](https://getbootstrap.com/)
 
 
 
