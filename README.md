@@ -1,73 +1,98 @@
-# Vizsgamunka Backend Dokumentáció - DailyWave Hírportál
+# 📚 Vizsgamunka Backend Dokumentáció - DailyWave Hírportál
 Készítette: Schilling János Attila, Szabó Balázs
 
 A **DailyWave Hírportál** backendje egy Node.js és Express alapú API, amely felelős a különböző adatkezelésekért, mint például a hírek, fórum témák és hozzászólások kezelése. Az API kapcsolódik egy MySQL adatbázishoz és biztosítja az adatokat a frontend számára.
 
-## Technológiák
+---
+
+## ⚙️ Technológiák
+
 - **Node.js** - A backend futtató környezet.
 - **Express.js** - Web keretrendszer, amely lehetővé teszi a REST API gyors fejlesztését.
 - **MySQL** - Relációs adatbázis a háttéradatok tárolásához.
 
-## Adatbázis
-● category
-    ○ cat_id
-    ○ cat_name
+---
 
-● comments
-    ○ comment_id
-    ○ comment
-    ○ user_id
-    ○ topic_id
-    ○ date
+## 🗃️ Adatbázis
 
-● news
-    ○ news_id
-    ○ cat_id
-    ○ news_title
-    ○ news
-    ○ index_pic
+- **`category`**
+    - `cat_id`
+    - `cat_name`
 
-● newsletter
-    ○ newsletter_id
-    ○ name
-    ○ email
+- **`comments`**
+    - `comment_id`
+    - `comment`
+    - `user_id`
+    - `topic_id`
+    - `date`
 
-● pictures
-    ○ picture_id
-    ○ picture
-    ○ news_id
+- **`news`**
+    - `news_id`
+    - `cat_id`
+    - `news_title`
+    - `news`
+    - `index_pic`
 
-● ratings
-    ○ comment_id
-    ○ user_id
-    ○ plus
-    ○ minus
+- **`newsletter`**
+    - `newsletter_id`
+    - `name`
+    - `email`
 
-● topic
-    ○ topic_id
-    ○ topic_title
-    ○ user_id
-    ○ date
+- **`pictures`**
+    - `picture_id`
+    - `picture`
+    - `news_id`
 
-● users
-    ○ user_id
-    ○ email
-    ○ password
-    ○ role
-    ○ profile_picture
-    ○ username
+- **`ratings`**
+    - `comment_id`
+    - `user_id`
+    - `plus`
+    - `minus`
+
+- **`topic`**
+    - `topic_id`
+    - `topic_title`
+    - `user_id`
+    - `date`
+
+- **`users`**
+    - `user_id`
+    - `email`
+    - `password`
+    - `role`
+    - `profile_picture`
+    - `username`
+
+---
 
 ![Adatbázis diagram](images/adatbazis.png)
 
-## Telepítés
+---
+
+## 📥 Telepítés
 
 A backend telepítése a következő lépésekkel történik:
 
-### 1. Klónozd a repót
-git clone https://github.com/balazsszabo1/dailywave_backend.git  
-cd dailywave-backend  
-npm install  
-npm run dev
+1. **Klónozd a repót**
+    ```bash
+    git clone https://github.com/balazsszabo1/dailywave_backend.git
+    ```
+2. **Navigálj a projekt könyvtárába**
+    ```bash
+    cd dailywave-backend
+    ```
+3. **Telepítsd a szükséges csomagokat**
+    ```bash
+    npm install
+    ```
+4. **Indítsd el a fejlesztői szervert**
+    ```bash
+    npm run dev
+    ```
+
+---
+
+Ezután a backend kész lesz a tesztelésre és fejlesztésre!
 
 
 API Endpontok: 
