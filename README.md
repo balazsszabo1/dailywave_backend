@@ -247,7 +247,7 @@ A Postman tesztekről készült összes tesztelési link és dokumentáció elé
 - [ChatGPT](https://chat.openai.com/)
 - [GitHub](https://github.com/)
 - [Google Drive](https://drive.google.com/)
-- [Bootstrap](https://getbootstrap.com/)
+- [Bootstra](https://getbootstrap.com/)
 
 
 
