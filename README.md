@@ -57,7 +57,7 @@ A **DailyWave Hírportál** backendje egy Node.js és Express alapú API, amely 
     ○ profile_picture
     ○ username
 
-
+![Adatbázis diagram](/dailywave_backend/images/adatbazis.png)
 
 ## Telepítés
 
