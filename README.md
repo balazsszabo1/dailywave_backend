@@ -169,22 +169,28 @@ API Endpontok:
 - **`server.js`** – *Szerver indítása: a konfigurált porton elindítja az alkalmazást*
 
 
-## Backend GitHub és szerver integráció
+# 🌐 Backend GitHub és szerver integráció
 
 A projekt backendje a [GitHub repóban található](https://github.com/balazsszabo1/dailywave_backend), ahol a legfrissebb kód mindig elérhető. A backend szerver a következő címen fut: [https://nodejs.dszcbaross.edu.hu/server/7b76faf3](https://nodejs.dszcbaross.edu.hu/server/7b76faf3). 
 
-### Automatikus frissítések:
+---
 
-A backend szerver folyamatosan képes lekérni a legújabb változtatásokat közvetlenül a GitHub repóból, így a legfrissebb verzió mindig elérhető és futtatható anélkül, hogy manuálisan kellene frissíteni a kódot. Ezt a folyamatot automatizált script vagy CI/CD (Continuous Integration/Continuous Deployment) folyamat biztosítja, amely figyeli a GitHub repót, és frissíti a szervert a legújabb kódbázis alapján.
+### 🔄 Automatikus frissítések:
 
-### Használat:
+A backend szerver folyamatosan képes lekérni a legújabb változtatásokat közvetlenül a GitHub repóból, így a legfrissebb verzió mindig elérhető és futtatható anélkül, hogy manuálisan kellene frissíteni a kódot. Ezt a folyamatot automatizált script vagy **CI/CD** (Continuous Integration/Continuous Deployment) folyamat biztosítja, amely figyeli a GitHub repót, és frissíti a szervert a legújabb kódbázis alapján.
 
-1. **GitHub repo**: Az alkalmazás backend kódja a [https://github.com/balazsszabo1/dailywave_backend](https://github.com/balazsszabo1/dailywave_backend) linken található.
+---
+
+### 🧑‍💻 Használat:
+
+1. **GitHub repo**: Az alkalmazás backend kódja a [GitHub repóban található](https://github.com/balazsszabo1/dailywave_backend).
 2. **Szerver URL**: A backend szerver elérhetősége: [https://nodejs.dszcbaross.edu.hu/server/7b76faf3](https://nodejs.dszcbaross.edu.hu/server/7b76faf3).
 
 Ez biztosítja, hogy a kód mindig naprakész legyen, és az új változtatások automatikusan tükröződjenek a szerveren.
 
-## Biztonság és Titkosítás
+---
+
+## 🔒 Biztonság és Titkosítás
 
 A backend biztosítja az alapvető biztonsági mechanizmusokat az alkalmazás védelme érdekében. A következő megoldások kerültek implementálásra:
 
@@ -199,7 +205,7 @@ A felhasználók érzékeny adatainak, mint például a jelszavak, titkosítása
 
 ---
 
-## Hibakezelés és Naplózás
+## ⚠️ Hibakezelés és Naplózás
 
 ### 1. Hibakezelés
 A backendben a **hibakezelés** központilag van megoldva, hogy minden nem várt esemény a megfelelő válaszformátumban kerüljön továbbításra a frontend felé. A hibák megfelelő kódokkal (pl. 404, 500) vannak jelezve, és az API minden esetben részletes hibaüzenetet biztosít.
@@ -207,7 +213,10 @@ A backendben a **hibakezelés** központilag van megoldva, hogy minden nem várt
 ### 2. Naplózás
 Az alkalmazás **naplózza** a rendszer működését és az API kéréseket. A naplózási információk, mint például az API hívások időpontja, kérés típusai és válaszok, segítenek a hibák gyors diagnosztizálásában és a rendszer általános teljesítményének nyomon követésében. A naplózás konfigurálása az **express-winston** csomag segítségével történik, és a naplóadatok egy központi rendszerbe kerülhetnek továbbításra a későbbi elemzéshez.
 
-## Tesztelés
+---
+
+## 🧪 Tesztelés
+
 A backend API tesztelését a **Postman** eszközzel végeztük. A következő teszteket futtattuk le a különböző API végpontokon, hogy biztosítsuk azok helyes működését:
 
 - **Felhasználói regisztráció** (POST `/api/auth/register`)
@@ -218,6 +227,7 @@ A backend API tesztelését a **Postman** eszközzel végeztük. A következő t
 - **Admin jogosultság ellenőrzése** (POST `/api/admin/admin-only`)
 
 A Postman tesztekről készült összes tesztelési link és dokumentáció elérhető [itt](https://link_az_osszes_teszthez).
+
 
 ## 🌐 Frontend
 
