@@ -66,7 +66,7 @@ const searchNews = (req, res) => {
     return res.status(400).json({ error: 'Keresési kifejezés szükséges' });
   }
 
-  const sql = 'SELECT news_title FROM news WHERE news_title LIKE ?';
+  const sql = 'SELECT news_id, news_title FROM news WHERE news_title LIKE ?';
 
   db.query(sql, [`%${query}%`], (err, result) => {
     if (err) {
