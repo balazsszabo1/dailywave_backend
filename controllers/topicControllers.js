@@ -7,15 +7,11 @@ const getAlltopics = (req, res) => {
             topic.topic_title,
             topic.date,
             users.username,
-            (
-                SELECT comment 
-                FROM comments 
-                WHERE comments.topic_id = topic.topic_id 
-                ORDER BY comments.comment_id DESC 
-                LIMIT 1
-            ) AS last_comment
-        FROM topic 
-        JOIN users USING(user_id)
+            MAX(comments.date) AS last_comment_date
+        FROM topic
+        JOIN users ON topic.user_id = users.user_id
+        LEFT JOIN comments ON topic.topic_id = comments.topic_id
+        GROUP BY topic.topic_id
         ORDER BY topic.date DESC;
     `, (err, results) => {
         if (err) {
